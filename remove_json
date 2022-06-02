@@ -1,0 +1,24 @@
+#! /usr/bin/env python3
+# remove_json is a short script made to delete unwanted .json files from my Google Photo Archive extracts
+
+from pathlib import Path
+
+
+def remove_json():
+    counter = 0
+    cwd = Path.cwd()
+    for file in cwd.glob("*.json"):
+        # print(file)
+        counter += 1
+        Path.unlink(file)
+    return counter
+
+
+def main():
+    count = remove_json()
+    print(f"There were {count} .json files removed from {Path.cwd()}")
+
+
+if __name__ == "__main__":
+    main()
+

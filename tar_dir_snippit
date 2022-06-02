@@ -1,0 +1,20 @@
+import tarfile
+from pathlib import Path
+
+def make_tarfile(output_filename, source_dir):
+    with tarfile.open(output_filename, "w:gz") as tar:
+        tar.add(source_dir, arcname=Path(source_dir).name)
+
+
+# convert ctime to YYYY-MM-DD format
+# test = (
+#     Path("/home/comet/Pictures/Screenshot from 2022-05-31 22-17-18.png").stat().st_ctime
+# )
+# test_time = time.ctime(test)
+# time_object = time.strptime(test_time)
+# time_formatted = time.strftime("%Y-%m-%d", time_object)
+
+# define dates
+# today = datetime.today().strftime("%Y-%m-%d")
+# week_ago = datetime.today() - timedelta(days=7)
+# week_ago = week_ago.strftime("%Y-%m-%d")
