@@ -17,7 +17,7 @@ delta = time.time() - (
     7 * 86400
 )  # time is in seconds/86400 seconds in a day.  this is 7 days
 
-picture_directory = "/home/comet/Pictures"
+picture_directory = "/home/comet/Pictures/Screenshots"
 archive_directory = "/home/comet/Pictures/Screenshot_Archive"
 
 # build a path object of files
