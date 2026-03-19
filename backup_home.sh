@@ -1,17 +1,30 @@
 #!/bin/bash
 
 BACKUP_MOUNT="/mnt/bank"
+LOG_FILE="/var/log/rsync-home.log"
+
+echo "$(date '+%F %T') - Backup job started." >>"$LOG_FILE"
 
 if ! mountpoint -q "$BACKUP_MOUNT"; then
-    echo "$(date '+%F %T') - Backup drive not mounted, aborting rsync." >>/var/log/rsync-home.log
+    echo "$(date '+%F %T') - Backup drive not mounted, aborting rsync." >>"$LOG_FILE"
     exit 1
 fi
 
-/usr/bin/rsync -aAXHv \
+# --delete <- add delete flag back after a few successful runs for sanity 3-18-26
+if /usr/bin/rsync -aAXH \
     --exclude='.steam' \
     --exclude='Games' \
     --exclude='.cache' \
     --exclude='.local/share/Trash' \
     --exclude='Downloads' \
     /home/comet/ "$BACKUP_MOUNT/comet/" \
-    --delete >>/var/log/rsync-home.log 2>&1
+    2>>"$LOG_FILE"; then
+    echo "$(date '+%F %T') - Backup completed successfully." >>"$LOG_FILE"
+else
+    rc=$?
+    if [ $rc -eq 24 ]; then
+        echo "$(date '+%F %T') - Backup completed successfully." >>"$LOG_FILE"
+    else
+        echo "$(date '+%F %T') - ERROR: Backup failed." >>"$LOG_FILE"
+    fi
+fi
